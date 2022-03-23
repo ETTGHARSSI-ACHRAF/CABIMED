@@ -38,5 +38,9 @@ app.use('/api/medecin', medecin);
 const cabinet = require('./routers/cabinetApi');
 app.use('/api/cabinet', cabinet);
 
+// pathe of Secretaire
+const secretaire = require('./routers/secretaireApi');
+app.use('/api/secretaire', secretaire);
+
 // set up server
 app.listen(process.env.APP_PORT, () => console.log(`started on port ', ${process.env.APP_PORT}`));
