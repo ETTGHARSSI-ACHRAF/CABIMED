@@ -7,22 +7,30 @@ const Mail = require('../mail/sendMail');
 
 const createMedecin = async (req, res) => {
     try {
-        const password = generator.generate({
-            length: 10,
-            numbers: true,
-          });
-        const medecin = new Medecin({
-            nom_medecin : req.body.nom,
-            prenom_medecin : req.body.prenom,
-            email_medecin : req.body.email,
-            password_medecin : bcrypt.hashSync(password, 10),
-        });
-        const newMedecin = await medecin.save();
-        await Mail(req.body.email, req.body.nom, req.body.prenom, password);
-        return res.status(200).json({
-            success: 1,
-            newMedecin
-        });
+        const {nom, prenom, email} = req.body;
+        if(!nom || !prenom || !email){
+            return res.status(200).json({
+                success : 0,
+                message : 'tous les champs sont obligatoire'
+            })
+        }else{
+            const password = generator.generate({
+                length: 10,
+                numbers: true,
+              });
+            const medecin = new Medecin({
+                nom_medecin : nom,
+                prenom_medecin : prenom,
+                email_medecin : email,
+                password_medecin : bcrypt.hashSync(password, 10),
+            });
+            const newMedecin = await medecin.save();
+            await Mail(email, nom, prenom, password);
+            return res.status(200).json({
+                success: 1,
+                newMedecin
+            });
+        }  
     } catch (error) {
         return res.status(500).json({
             success: 0,
@@ -49,7 +57,6 @@ const getMedecinById = async (req, res) =>{
 
 
 const ChekPassword = async (email,password) =>{
-    
         const medecin = await Medecin.find({email_medecin:email});
         if(medecin.length !==0){
             const comparePassword = bcrypt.compareSync(password,medecin[0].password_medecin) 
@@ -65,20 +72,30 @@ const ChekPassword = async (email,password) =>{
 
 const updateMedecin = async (req,res) =>{
     try{
+
         var newDAtaMedecin = {};
-        if(req.body.password){
-            const chekPassword = await ChekPassword(req.body.email,req.body.password_anc)
+        const {nom, prenom, email, tele, specialite, password_anc, password} = req.body;
+        if(!nom || !prenom || !email ||  !tele || !specialite){
+            return res.status(200).json({
+                success : 0,
+                message : 'tous les champs sont obligatoire'
+            })
+        }else{
+        if(password){
+            const chekPassword = await ChekPassword(email,password_anc)
             
             if(chekPassword){
+
                 newDAtaMedecin = {
-                    nom_medecin : req.body.nom,
-                    prenom_medecin : req.body.prenom,
-                    email_medecin : req.body.email,
-                    tele_medecin:req.body.tele,
-                    specialite_medecin : req.body.specialie,
-                    password_medecin : bcrypt.hashSync(req.body.password, 10),
+                    nom_medecin : nom,
+                    prenom_medecin : prenom,
+                    email_medecin : email,
+                    tele_medecin : tele,
+                    specialite_medecin : specialite,
+                    password_medecin : bcrypt.hashSync(password, 10),
                 }
                 const medecin = await Medecin.updateOne({ _id: req.params.id }, newDAtaMedecin);
+                
                 return res.status(200).json({
                     success: 1,
                     medecin
@@ -93,11 +110,11 @@ const updateMedecin = async (req,res) =>{
             }
         }else{
             newDAtaMedecin = {
-                nom_medecin : req.body.nom,
-                prenom_medecin : req.body.prenom,
-                email_medecin : req.body.email,
-                tele_medecin:req.body.tele,
-                specialite_medecin : req.body.specialie,
+                nom_medecin : nom,
+                prenom_medecin : prenom,
+                email_medecin : email,
+                tele_medecin : tele,
+                specialite_medecin : specialie,
             }
             const medecin = await Medecin.updateOne({ _id: req.params.id }, newDAtaMedecin);
             return  res.status(200).json({
@@ -106,7 +123,7 @@ const updateMedecin = async (req,res) =>{
             });
             
         }
-       
+    }
     
     }catch(error){
         return res.status(400).json({

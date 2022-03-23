@@ -19,7 +19,6 @@ const Mail = async (email, nom, prenom, password) => {
         if (err) {
             return console.log(err);
         } else {
-            console.log('mail sent to :', email)
             return res.status(200).json({
                 success: 1,
                 message: 'data has sent '
