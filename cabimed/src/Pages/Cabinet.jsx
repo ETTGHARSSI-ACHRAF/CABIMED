@@ -7,7 +7,7 @@ import FormMedecin from '../Components/FormMedecin'
 const Cabinet = () => {
     return (
         <>
-            <div className='flex place-content-center w-full flex-col md:flex-row'>
+            <div className='flex place-content-center w-full  flex-col md:flex-row'>
                 <FormMedecin />
                 <FormCabinet />
 

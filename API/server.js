@@ -42,5 +42,17 @@ app.use('/api/cabinet', cabinet);
 const secretaire = require('./routers/secretaireApi');
 app.use('/api/secretaire', secretaire);
 
+// pathe of Certificat
+const certificat = require('./routers/certificatApi');
+app.use('/api/certificat', certificat);
+
+// pathe of Consultation
+const consultation = require('./routers/consultationApi');
+app.use('/api/consultation', consultation);
+
+// pathe of PAtient
+const patient = require('./routers/patientApi');
+app.use('/api/patient', patient);
+
 // set up server
 app.listen(process.env.APP_PORT, () => console.log(`started on port ', ${process.env.APP_PORT}`));

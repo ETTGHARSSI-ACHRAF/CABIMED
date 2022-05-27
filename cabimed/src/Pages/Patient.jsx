@@ -1,10 +1,10 @@
 import React from 'react'
-import TablePatient from '../Components/Table/TablePatient'
+import { Outlet } from 'react-router-dom'
 
 const Patient = () => {
   return (
     <>
-    <TablePatient/>
+    <Outlet/>
     </>
   )
 }

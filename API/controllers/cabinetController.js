@@ -1,5 +1,5 @@
 const Cabinet = require("../models/cabinetModel");
-
+ 
 
 
 const createCabinet = async (req, res) => {

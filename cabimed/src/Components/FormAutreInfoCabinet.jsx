@@ -2,7 +2,7 @@ import React from 'react'
 
 const FormAutreInfoCabinet = () => {
     return (
-        <div class="p-4 text-gray-500   bg-white py-6 rounded-md md:m-10 m-5 shadow-md">
+        <div class="p-4 text-gray-500   bg-white py-6 rounded-md md:mx-10 m-5 shadow-md">
             <h1 class="text-center text-lg font-bold text-sky-400">Autre information</h1>
             <div class=" flex">
                 <div class='w-1/2'>

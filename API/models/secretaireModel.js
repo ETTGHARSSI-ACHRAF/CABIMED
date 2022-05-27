@@ -24,6 +24,10 @@ const secretaireSchema = new mongoose.Schema({
     salaire_secretaire:{
         type:Number,
         required:true
+    },
+    role: {
+         type : String,
+         default : 'secretaire'
     }
 });
 module.exports = mongoose.model('secretaire',secretaireSchema);

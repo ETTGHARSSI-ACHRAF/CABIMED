@@ -1,0 +1,1 @@
+class Articles{constructor(){this._initGlide()}_initGlide(){document.querySelector("#glideCenter")&&new GlideCustom(document.querySelector("#glideCenter"),{gap:0,type:"carousel",perView:6,peek:{before:50,after:50},breakpoints:{600:{perView:1},1e3:{perView:2},1400:{perView:3},1900:{perView:5},3840:{perView:6}}},!0).mount()}}

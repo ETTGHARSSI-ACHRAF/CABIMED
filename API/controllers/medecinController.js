@@ -2,7 +2,7 @@ const Medecin = require("../models/medecinModel");
 const generator = require("generate-password");
 const bcrypt = require("bcrypt");
 const Mail = require('../mail/sendMail');
-
+const jsonwebtoken = require("jsonwebtoken");
 
 
 const createMedecin = async (req, res) => {
@@ -114,7 +114,7 @@ const updateMedecin = async (req,res) =>{
                 prenom_medecin : prenom,
                 email_medecin : email,
                 tele_medecin : tele,
-                specialite_medecin : specialie,
+                specialite_medecin : specialite,
             }
             const medecin = await Medecin.updateOne({ _id: req.params.id }, newDAtaMedecin);
             return  res.status(200).json({
@@ -133,8 +133,57 @@ const updateMedecin = async (req,res) =>{
     }
 }
 
+const loginMedecin = async (req, res) => {
+    try {
+        if(!req.body.email || !req.body.password ){
+            return res.status(200).json({
+                success: 0,
+                message: 'tous les champs sont obligatoire'
+            })
+        }else{
+            const medecin = await Medecin.find({ email_medecin : req.body.email });
+        if (medecin.length !== 0) {
+            const comparePassword = bcrypt.compareSync(
+                req.body.password,
+                medecin[0].password_medecin
+            );
+            if (comparePassword) {
+                medecin[0].password_medecin = undefined;
+                const token = jsonwebtoken.sign(
+                    { result: medecin[0] },
+                    process.env.SECRET_KEY_MED,
+                    {
+                        expiresIn: "24h",
+                    }
+                );
+                res.status(200).json({
+                    success: 1,
+                    token: token,
+                });
+            } else {
+                res.status(200).json({
+                    success: 0,
+                    message: "passwor or email incorrect1",
+                });
+            }
+        } else {
+            res.status(401).json({
+                success: 0,
+                message: "passwor or email incorrect2",
+            });
+        }
+        }
+    } catch (error) {
+        return res.status(400).json({
+            success: 0,
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     createMedecin,
     updateMedecin,
-    getMedecinById
+    getMedecinById,
+    loginMedecin
 }
