@@ -5,7 +5,7 @@ const AddMedicament = () => {
   const [open, setOpen] = useState(false)
   const [nom_med, setNom_med] = useState('')
   const [forme, setForme] = useState('')
-  const [classe, setClasse] = useState('')
+  const [classe, setClasse] = useState('') 
   const addMed = () => {
     axios.post('http://localhost:8000/api/medicament', {
       nom: nom_med,

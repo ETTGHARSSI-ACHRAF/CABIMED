@@ -1,8 +1,30 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import {AiOutlineCloseCircle} from 'react-icons/ai'
 import {GrUpdate} from 'react-icons/gr'
-const UpdateRascan = () => {
+const UpdateRascan = ({rascan}) => {
     const [open, setOpen] = useState(false)
+    const [type, setType] = useState(rascan.type_rascan)
+    const [nom, setNom] = useState(rascan.nom_rascan)
+
+    const Update = (id) =>{
+      
+      axios.patch(`http://localhost:8000/api/rascan/${id}`,{
+        type: type,
+        nom: nom
+    })
+    .then(res => {
+      setOpen(false);
+      console.log(nom);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  
+  
+  
+    }
+
     return (
       <>
         <button className="p-2  border-sky-500 border text-sky-500 rounded transition duration-300 hover:bg-sky-500 hover:text-white focus:outline-none" onClick={() => setOpen(true)}><GrUpdate/></button>
@@ -24,15 +46,15 @@ const UpdateRascan = () => {
   
                 <div className="p-6 space-y-6">
                   <div className="w-full">
-                    <input type="text" placeholder="Nom" className="px-4 py-2 bg-gray-50 w-full rounded-md" />
+                    <input type="text" placeholder="Nom" onChange={(e)=>{setNom(e.target.value)}} defaultValue={rascan.nom_rascan} className="px-4 py-2 bg-gray-50 w-full rounded-md" />
                   </div>
                   <div className="w-full">
-                    <input type="text" placeholder="Typa" className="px-4 py-2 bg-gray-50 w-full rounded-md" />
+                    <input type="text" placeholder="Type" onChange={(e)=>{setType(e.target.value)}} defaultValue={rascan.type_rascan}  className="px-4 py-2 bg-gray-50 w-full rounded-md" />
                   </div>
                 </div>
   
                 <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                  <button data-modal-toggle="default-modal" type="button" className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
+                  <button data-modal-toggle="default-modal" type="button" className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" onClick={()=>{Update(rascan._id)}} >Update</button>
                   <button data-modal-toggle="default-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600" onClick={() => setOpen(false)}>Cansel</button>
                 </div>
               </div>

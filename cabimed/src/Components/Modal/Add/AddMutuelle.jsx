@@ -1,8 +1,21 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 const AddMutuelle = () => {
     const [open, setOpen] = React.useState(false);
+    const [type, setType] = useState('')
+    const addMutuelle = () => {
+      axios.post('http://localhost:8000/api/mutuelle', {
+        type: type,
+      })
+        .then(res => {
+          setOpen(false);
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
     return (
     <>
             <button className="p-2 mr-2 border-sky-500 border text-sky-500 rounded transition duration-300 hover:bg-sky-500 hover:text-white focus:outline-none" onClick={() => setOpen(true)}>Ajouter Mutuelle</button>
@@ -24,10 +37,10 @@ const AddMutuelle = () => {
 
                             <div className="p-6 space-y-6">
                                 <div className="w-full">
-                                    <input type="text" placeholder="Type" className="px-4 py-2 bg-gray-50 w-full rounded-md" />
+                                    <input type="text" placeholder="Type" onChange={(e)=>{setType(e.target.value)}} className="px-4 py-2 bg-gray-50 w-full rounded-md" />
                                 </div>
                                 <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                                    <button data-modal-toggle="default-modal" type="button" className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Ajouter</button>
+                                    <button data-modal-toggle="default-modal" type="button" className="text-white bg-sky-500 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" onClick={()=>{addMutuelle()}}  >Ajouter</button>
                                     <button data-modal-toggle="default-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600" onClick={() => setOpen(false)}>Cansel</button>
                                 </div>
                             </div>

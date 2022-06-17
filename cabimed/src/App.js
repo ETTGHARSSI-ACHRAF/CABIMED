@@ -10,6 +10,7 @@ import Patient from './Pages/Patient';
 import SalleAttente from './Pages/SalleAttente';
 import TablePatient from './Components/Table/TablePatient';
 import TableConsultPatien from './Components/Table/TableConsultPatien';
+import Login from './Pages/Login';
 function App() {
   return (
     <Router>
@@ -25,7 +26,9 @@ function App() {
             <Route path='consultations/id' element={<TableConsultPatien/>} />
           </Route>
           <Route path='salleAttente' element={<SalleAttente/>} />
+          
         </Route>
+        <Route path='medecin/login' element={<Login/>} />
       </Routes>
     </Router>
   );
